@@ -13,6 +13,6 @@ namespace Movies4U.Models
 
         public string Email { get; set; }
 
-        public DateTime Birthdate { get; set; }
+        public DateTime Birthdate { get; set; } 
     }
 }
