@@ -1,0 +1,30 @@
+@model Movies4U.Models.MovieGenres
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>MovieGenres</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Genre)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Genre.Id)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Movie)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Movie.Id)
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    <a asp-action="Index">Back to List</a>
+</div>
