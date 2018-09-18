@@ -19,5 +19,12 @@ namespace Movies4U.Models
 
         public int MinimumAge { get; set; }
 
+        public string TrailerURL { get; set; }
+
+        // Many 2 Many with Genre
+        public ICollection<MovieGenres> MovieGenres { get; set; }
+
+        // Many 2 Many with Language
+        public ICollection<MovieLanguages> MovieLanguages { get; set; }
     }
 }
