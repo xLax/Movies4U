@@ -48,8 +48,8 @@ namespace Movies4U.Controllers
         // GET: MovieLanguages/Create
         public IActionResult Create()
         {
-            ViewData["LanguageId"] = new SelectList(_context.Language, "Id", "Id");
-            ViewData["MovieId"] = new SelectList(_context.Movie, "Id", "Id");
+            ViewData["LanguageId"] = new SelectList(_context.Language, "Id", "Name");
+            ViewData["MovieId"] = new SelectList(_context.Movie, "Id", "Name");
             return View();
         }
 

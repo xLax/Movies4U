@@ -48,8 +48,8 @@ namespace Movies4U.Controllers
         // GET: MovieGenres/Create
         public IActionResult Create()
         {
-            ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "Id");
-            ViewData["MovieId"] = new SelectList(_context.Movie, "Id", "Id");
+            ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "Name");
+            ViewData["MovieId"] = new SelectList(_context.Movie, "Id", "Name");
             return View();
         }
 
@@ -66,6 +66,7 @@ namespace Movies4U.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
+            
             ViewData["GenreId"] = new SelectList(_context.Genre, "Id", "Id", movieGenres.GenreId);
             ViewData["MovieId"] = new SelectList(_context.Movie, "Id", "Id", movieGenres.MovieId);
             return View(movieGenres);
