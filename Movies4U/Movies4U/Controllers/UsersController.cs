@@ -24,6 +24,11 @@ namespace Movies4U.Controllers
             return View(await _context.Users.ToListAsync());
         }
 
+        public IActionResult Home()
+        {
+            return View();
+        }
+
         // GET: Users/Details/5
         public async Task<IActionResult> Details(string id)
         {
@@ -61,6 +66,19 @@ namespace Movies4U.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
+            return View(users);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Home([Bind("Username,Password")] Users users)
+        {
+            //if (ModelState.IsValid)
+            //{
+            //    _context.Add(users);
+            //    await _context.SaveChangesAsync();
+            //    return RedirectToAction("Index");
+            //}
             return View(users);
         }
 
