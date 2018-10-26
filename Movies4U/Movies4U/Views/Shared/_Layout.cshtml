@@ -1,4 +1,6 @@
-﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor contextHttp
+@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
 <!DOCTYPE html>
 <html>
 <head>
@@ -42,6 +44,22 @@
                     <li><a asp-area="" asp-controller="Movies" asp-action="Index">Movie</a></li>
                     <li><a asp-area="" asp-controller="MovieGenres" asp-action="Index">Movie Genres</a></li>
                     <li><a asp-area="" asp-controller="MovieLanguages" asp-action="Index">Movie Languages</a></li>
+                    @if (contextHttp.HttpContext.Session.GetString("userName") == null)
+                    {
+                        <li><a asp-area="" asp-controller="Users" asp-action="Login">Login</a></li>
+                    }
+                    else
+                    {
+                        if (contextHttp.HttpContext.Session.GetString("isAdmin") == "true")
+                        {
+                            <li>Hello Admin @contextHttp.HttpContext.Session.GetString("userName")</li>
+                        }
+                        else
+                        {
+
+                            <li>Hello @contextHttp.HttpContext.Session.GetString("userName")</li>
+                        }
+                    }
                 </ul>
             </div>
         </div>

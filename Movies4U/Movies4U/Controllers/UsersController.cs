@@ -151,6 +151,12 @@ namespace Movies4U.Controllers
             return _context.Users.Any(e => e.Username == id);
         }
 
+        // GET: Users/Login
+        public IActionResult Login()
+        {
+            return View();
+        }
+
         // POST: Users/Login
         [HttpPost]
         [ValidateAntiForgeryToken]
