@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Session;
 using Movies4U.Models;
 
 namespace Movies4U.Controllers
@@ -147,6 +149,34 @@ namespace Movies4U.Controllers
         private bool UsersExists(string id)
         {
             return _context.Users.Any(e => e.Username == id);
+        }
+
+        // POST: Users/Login
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login([Bind("Username,Password")] Users user)
+        {
+
+            if (ModelState.IsValid)
+            {
+                Users tmp_user = (Users)_context.Users.Single(currUser => user.Password == currUser.Password && user.Username == currUser.Username);
+                if (tmp_user != null)
+                {
+                    HttpContext.Session.SetString("userName", tmp_user.Username);
+                    HttpContext.Session.SetString("birthdate", tmp_user.Birthdate.ToString());
+                    if (tmp_user.Username == "chen" && tmp_user.Password == "1234")
+                    {
+                        HttpContext.Session.SetString("isAdmin", "true");
+                    }
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    // TODO : return error message
+                    //return Json(new { error = "User name or password are incorrect." });
+                }
+            }
+            return RedirectToAction("Index");
         }
     }
 }

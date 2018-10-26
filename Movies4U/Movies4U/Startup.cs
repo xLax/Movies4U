@@ -54,6 +54,9 @@ namespace Movies4U
 
             app.UseStaticFiles();
 
+            // Session definition
+            app.UseSession();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
