@@ -37,7 +37,6 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="Index">Home</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="About">About</a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
-                    <li><a asp-area="" asp-controller="Genres" asp-action="Index">Genre</a></li>
                     <li><a asp-area="" asp-controller="Languages" asp-action="Index">Language</a></li>
                     <li><a asp-area="" asp-controller="Theators" asp-action="Index">Theator</a></li>
                     <li><a asp-area="" asp-controller="Users" asp-action="Index">User</a></li>
@@ -51,16 +50,15 @@
                     }
                     else
                     {
-                        
+                        <li><a asp-area="" asp-controller="Users" asp-action="Logout">Logout</a></li>
 
                         if (contextHttp.HttpContext.Session.GetString("isAdmin") == "true")
                         {
-                            <li>Hello Admin @contextHttp.HttpContext.Session.GetString("userName")</li>
+                            <li><a>Hello Admin @contextHttp.HttpContext.Session.GetString("userName")</a></li>
                         }
                         else
                         {
-
-                            <li>Hello @contextHttp.HttpContext.Session.GetString("userName")</li>
+                            <li><a>Hello @contextHttp.HttpContext.Session.GetString("userName")</a></li>
                         }
                     }
                 </ul>

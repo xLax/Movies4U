@@ -188,20 +188,10 @@ namespace Movies4U.Controllers
         // GET: Users/Logout
         public IActionResult Logout()
         {
-            return View();
-        }
-
-        // POST: Users/Login
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Logout([Bind("Username,Password")] Users user)
-        {
-            if( HttpContext.Session.GetString("userName") != null &&
+            if (HttpContext.Session.GetString("userName") != null &&
                 HttpContext.Session.GetString("birthdate") != null)
             {
-                HttpContext.Session.SetString("userName", null);
-                HttpContext.Session.SetString("birthdate", null);
-                HttpContext.Session.SetString("isAdmin", "false");
+                HttpContext.Session.Clear();
             }
 
             return RedirectToAction("Index", "Home");
