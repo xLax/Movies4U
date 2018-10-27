@@ -178,7 +178,18 @@ namespace Movies4U.Controllers
                 if (tmp_user != null)
                 {
                     HttpContext.Session.SetString("userName", tmp_user.Username);
-                    HttpContext.Session.SetString("birthdate", tmp_user.Birthdate.ToString());
+                    var today = DateTime.Today;
+                    var age = today.Year - tmp_user.Birthdate.Year;
+                    if (tmp_user.Birthdate > today.AddYears(-age)) age--;
+                    if (age >= 16)
+                    {
+                        HttpContext.Session.SetString("16+", "true");
+                    }
+                    else
+                    {
+                        HttpContext.Session.SetString("16+", "false");
+                    }
+                    
                     if (tmp_user.Username == "chen" && tmp_user.Password == "1234")
                     {
                         HttpContext.Session.SetString("isAdmin", "true");
@@ -197,8 +208,7 @@ namespace Movies4U.Controllers
         // GET: Users/Logout
         public IActionResult Logout()
         {
-            if (HttpContext.Session.GetString("userName") != null &&
-                HttpContext.Session.GetString("birthdate") != null)
+            if (HttpContext.Session.GetString("userName") != null)
             {
                 HttpContext.Session.Clear();
             }
