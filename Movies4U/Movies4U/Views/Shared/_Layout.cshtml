@@ -46,10 +46,13 @@
                     <li><a asp-area="" asp-controller="MovieLanguages" asp-action="Index">Movie Languages</a></li>
                     @if (contextHttp.HttpContext.Session.GetString("userName") == null)
                     {
+                        <li><a asp-area="" asp-controller="Users" asp-action="Create">Register</a></li>
                         <li><a asp-area="" asp-controller="Users" asp-action="Login">Login</a></li>
                     }
                     else
                     {
+                        
+
                         if (contextHttp.HttpContext.Session.GetString("isAdmin") == "true")
                         {
                             <li>Hello Admin @contextHttp.HttpContext.Session.GetString("userName")</li>

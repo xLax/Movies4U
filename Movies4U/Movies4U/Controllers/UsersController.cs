@@ -17,7 +17,7 @@ namespace Movies4U.Controllers
 
         public UsersController(DatabaseContext context)
         {
-            _context = context;    
+            _context = context;
         }
 
         // GET: Users
@@ -61,7 +61,7 @@ namespace Movies4U.Controllers
             {
                 _context.Add(users);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Login", "Users");
             }
             return View(users);
         }
@@ -183,6 +183,28 @@ namespace Movies4U.Controllers
                 }
             }
             return RedirectToAction("Index");
+        }
+
+        // GET: Users/Logout
+        public IActionResult Logout()
+        {
+            return View();
+        }
+
+        // POST: Users/Login
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Logout([Bind("Username,Password")] Users user)
+        {
+            if( HttpContext.Session.GetString("userName") != null &&
+                HttpContext.Session.GetString("birthdate") != null)
+            {
+                HttpContext.Session.SetString("userName", null);
+                HttpContext.Session.SetString("birthdate", null);
+                HttpContext.Session.SetString("isAdmin", "false");
+            }
+
+            return RedirectToAction("Index", "Home");
         }
     }
 }
