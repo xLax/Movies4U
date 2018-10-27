@@ -59,9 +59,18 @@ namespace Movies4U.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(users);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Login", "Users");
+                Users tmp_user = (Users)_context.Users.SingleOrDefault(currUser => users.Username == currUser.Username);
+                if (tmp_user == null)
+                {
+                    _context.Add(users);
+                    ModelState.AddModelError("Register", "");
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Login", "Users");
+                }
+                else
+                {
+                    ModelState.AddModelError("Register", "User name already exist");
+                }
             }
             return View(users);
         }
