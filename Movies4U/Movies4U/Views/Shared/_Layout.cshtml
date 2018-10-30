@@ -42,7 +42,6 @@
                     <li><a asp-area="" asp-controller="Users" asp-action="Index">User</a></li>
                     <li><a asp-area="" asp-controller="Movies" asp-action="Index">Movie</a></li>
                     <li><a asp-area="" asp-controller="MovieGenres" asp-action="Index">Movie Genres</a></li>
-                    <li><a asp-area="" asp-controller="MovieLanguages" asp-action="Index">Movie Languages</a></li>
                     @if (contextHttp.HttpContext.Session.GetString("userName") == null)
                     {
                         <li><a asp-area="" asp-controller="Users" asp-action="Create">Register</a></li>
@@ -54,6 +53,7 @@
 
                         if (contextHttp.HttpContext.Session.GetString("isAdmin") == "true")
                         {
+                            <li><a asp-area="" asp-controller="Users" asp-action="Admin">Admin</a></li>
                             <li><a>Hello Admin @contextHttp.HttpContext.Session.GetString("userName")</a></li>
                         }
                         else

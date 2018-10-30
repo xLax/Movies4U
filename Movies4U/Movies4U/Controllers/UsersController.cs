@@ -215,5 +215,11 @@ namespace Movies4U.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+
+        // GET: Users/Admin
+        public IActionResult Admin()
+        {
+            return View();
+        }
     }
 }
