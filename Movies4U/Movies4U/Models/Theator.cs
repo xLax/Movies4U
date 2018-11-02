@@ -12,5 +12,9 @@ namespace Movies4U.Models
         public string Name { get; set; }
 
         public string City { get; set; }
+
+        public Double Lat { get; set; }
+
+        public Double Long { get; set; }
     }
 }

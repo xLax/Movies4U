@@ -53,7 +53,7 @@ namespace Movies4U.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,City")] Theator theator)
+        public async Task<IActionResult> Create([Bind("Id,Name,City,Lat,Long")] Theator theator)
         {
             if (ModelState.IsValid)
             {
@@ -85,7 +85,7 @@ namespace Movies4U.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,City")] Theator theator)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,City,Lat,Long")] Theator theator)
         {
             if (id != theator.Id)
             {
