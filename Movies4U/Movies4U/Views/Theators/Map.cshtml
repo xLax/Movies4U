@@ -1,17 +1,16 @@
-@model Movies4U.Models.Theator
+@model string
 
 @{
     ViewData["Title"] = "Map";
 }
 
-<h2>Map</h2>
+<h2>Theators</h2>
 
 <form asp-action="Map">
     <div class="form-horizontal">
-        <h4>Theator</h4>
+        <h4>See Theators locations and check if the today's weather is perfect for a movie</h4>
 
-        <img src="https://dev.virtualearth.net/REST/v1/Imagery/Map/Road/47.619048,-122.35384/15?mapSize=500,500&pp=47.620495,-122.34931;21;AA&pp=47.619385,-122.351485;;AB&pp=47.616295,-122.3556;22&key=Anz_iVVHeUHXQ9AMe_F5SIeaxLVAytusIPIK4NaTQibfrSBGSUcQVMv8KCe8xhWY" />
-        <div id="myMap" style="position:relative;width:100%;height:500px;"></div>
+        <img src="@Model" />
     </div>
 </form>
 
