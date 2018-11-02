@@ -148,5 +148,11 @@ namespace Movies4U.Controllers
         {
             return _context.Theator.Any(e => e.Id == id);
         }
+
+        // GET: Theators/Map
+        public IActionResult Map()
+        {
+            return View();
+        }
     }
 }
