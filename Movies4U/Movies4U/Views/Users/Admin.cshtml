@@ -1,0 +1,76 @@
+@model Movies4U.Models.Users
+
+@{
+    ViewData["Title"] = "Admin";
+}
+
+<h2>Admin</h2>
+<h5>Welcome to the admin page, use the various options to manage the website.</h5>
+
+
+<hr />
+<head>
+    <style>
+        .try {
+            background-color: black;
+            color: red;
+            font-size: xx-large;
+            font: Gadugi !important;
+            width: 300px;
+            height: 250px;
+            text-align: center;
+            box-sizing: border-box;
+            border: none;
+            outline: none;
+            display: inline-block;
+            transition-duration: 0.4s;
+        }
+
+            .try:hover {
+                background-color: #353535;
+                color: red;
+                font-size: xx-large;
+                font: Gadugi !important;
+                width: 300px;
+                height: 250px;
+                text-align: center;
+                box-sizing: border-box;
+                border: none;
+                outline: none;
+                display: inline-block;
+            }
+
+        .all {
+            margin: auto;
+            width: 70%;
+            padding: 40px 40px 40px 40px;
+            text-align: center;
+        }
+
+        .spacing-td {
+            width: 40px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <form asp-action="Admin">
+        <div class="all">
+            <table>
+                <tr>
+                    <td><button class="try" asp-area="" asp-controller="Users" asp-action="Index">Manage Users</button></td>
+                    <td class="spacing-td"></td>
+                    <td><button class="try" asp-area="" asp-controller="Movies" asp-action="Index">Manage Movies</button></td>
+                </tr>
+                <tr><td height="40px"></td></tr>
+                <tr>
+                    <td><button class="try" asp-area="" asp-controller="Theators" asp-action="Index">Manage Theators</button></td>
+                    <td class="spacing-td"></td>
+                    <td><button class="try" asp-area="" asp-controller="MovieGenres" asp-action="Index">Manage MovieGenres</button></td>
+                </tr>
+            </table>
+            </div>
+        
+</form>
+</body>

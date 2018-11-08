@@ -1,0 +1,20 @@
+@model string
+
+@{
+    ViewData["Title"] = "Map";
+}
+
+<h2>Theators</h2>
+
+<form asp-action="Map">
+    <div class="form-horizontal">
+        <h4>See Theators locations and check if the today's weather is perfect for a movie</h4>
+
+        <img src="@Model" />
+    </div>
+</form>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}

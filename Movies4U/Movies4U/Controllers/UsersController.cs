@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Session;
 using Movies4U.Models;
 
 namespace Movies4U.Controllers
@@ -15,7 +17,7 @@ namespace Movies4U.Controllers
 
         public UsersController(DatabaseContext context)
         {
-            _context = context;    
+            _context = context;
         }
 
         // GET: Users
@@ -62,9 +64,18 @@ namespace Movies4U.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(users);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                Users tmp_user = (Users)_context.Users.SingleOrDefault(currUser => users.Username == currUser.Username);
+                if (tmp_user == null)
+                {
+                    _context.Add(users);
+                    ModelState.AddModelError("Register", "");
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Login", "Users");
+                }
+                else
+                {
+                    ModelState.AddModelError("Register", "User name already exist");
+                }
             }
             return View(users);
         }
@@ -165,6 +176,68 @@ namespace Movies4U.Controllers
         private bool UsersExists(string id)
         {
             return _context.Users.Any(e => e.Username == id);
+        }
+
+        // GET: Users/Login
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        // POST: Users/Login
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login([Bind("Username,Password")] Users user)
+        {
+
+            if (ModelState.IsValid)
+            {
+                Users tmp_user = (Users)_context.Users.Single(currUser => user.Password == currUser.Password && user.Username == currUser.Username);
+                if (tmp_user != null)
+                {
+                    HttpContext.Session.SetString("userName", tmp_user.Username);
+                    var today = DateTime.Today;
+                    var age = today.Year - tmp_user.Birthdate.Year;
+                    if (tmp_user.Birthdate > today.AddYears(-age)) age--;
+                    if (age >= 16)
+                    {
+                        HttpContext.Session.SetString("16+", "true");
+                    }
+                    else
+                    {
+                        HttpContext.Session.SetString("16+", "false");
+                    }
+                    
+                    if (tmp_user.Username == "chen" && tmp_user.Password == "1234")
+                    {
+                        HttpContext.Session.SetString("isAdmin", "true");
+                    }
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    // TODO : return error message
+                    //return Json(new { error = "User name or password are incorrect." });
+                }
+            }
+            return RedirectToAction("Index");
+        }
+
+        // GET: Users/Logout
+        public IActionResult Logout()
+        {
+            if (HttpContext.Session.GetString("userName") != null)
+            {
+                HttpContext.Session.Clear();
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        // GET: Users/Admin
+        public IActionResult Admin()
+        {
+            return View();
         }
     }
 }

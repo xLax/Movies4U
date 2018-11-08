@@ -5,9 +5,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 
-// ********************************************
-// Author: Liron Levi and Chen Algrabli
-// ********************************************
+// ********************************************************
+// Author: Liron Levi and Chen Algrabli and May Achultheiss
+// ********************************************************
 
 namespace Movies4U
 {

@@ -53,7 +53,7 @@ namespace Movies4U.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,City")] Theator theator)
+        public async Task<IActionResult> Create([Bind("Id,Name,City,Lat,Long")] Theator theator)
         {
             if (ModelState.IsValid)
             {
@@ -85,7 +85,7 @@ namespace Movies4U.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,City")] Theator theator)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,City,Lat,Long")] Theator theator)
         {
             if (id != theator.Id)
             {
@@ -147,6 +147,20 @@ namespace Movies4U.Controllers
         private bool TheatorExists(int id)
         {
             return _context.Theator.Any(e => e.Id == id);
+        }
+
+        // GET: Theators/Map
+        public IActionResult Map()
+        {
+            IEnumerable<Movies4U.Models.Theator> d = _context.Theator.ToList();
+            string mapString = "https://dev.virtualearth.net/REST/v1/Imagery/Map/Road/31.969738,34.772787/15?mapSize=500,500";
+            foreach (var item in d)
+            {
+                mapString += "&pp=" + item.Lat.ToString() + "," + item.Long.ToString() + ";0;" + item.Name.ToString();
+
+            }
+            mapString += "&key=Anz_iVVHeUHXQ9AMe_F5SIeaxLVAytusIPIK4NaTQibfrSBGSUcQVMv8KCe8xhWY";
+            return View((object)mapString);
         }
     }
 }
