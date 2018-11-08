@@ -1,18 +1,105 @@
-@model string
+@using System.Net.Http;
+@using System.Threading.Tasks;
+@using Newtonsoft.Json;
+@model IEnumerable<Movies4U.Models.Theator>
 
 @{
     ViewData["Title"] = "Map";
 }
 
-<h2>Theators</h2>
+<h2>Map</h2>
 
 <form asp-action="Map">
     <div class="form-horizontal">
-        <h4>See Theators locations and check if the today's weather is perfect for a movie</h4>
-
-        <img src="@Model" />
+        <h4>Theator</h4>
+        <div id="myMap" style="position:relative;width:100%;height:500px;"></div>
     </div>
 </form>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script type='text/javascript'
+            src='http://www.bing.com/api/maps/mapcontrol?callback=GetMap'
+            async defer></script>
+    <script type='text/javascript'>
+    var map, infobox;
+
+        function GetMap() {
+
+            // Get the maps data from the controller, in JSON format
+            var mapsData = @Html.Raw(Json.Serialize(Model));
+
+            // Set the BING MAP key
+            map = new Microsoft.Maps.Map('#myMap', {
+                credentials: 'Anz_iVVHeUHXQ9AMe_F5SIeaxLVAytusIPIK4NaTQibfrSBGSUcQVMv8KCe8xhWY'
+            });
+
+            //Create an infobox at the center of the map but don't show it.
+            infobox = new Microsoft.Maps.Infobox(map.getCenter(), {
+                visible: false
+            });
+
+            //Assign the infobox to a map instance.
+            infobox.setMap(map);
+
+            //Create a pushpin at a random location in the map bounds.
+            var randomLocation = Microsoft.Maps.TestDataGenerator.getLocations(1, map.getBounds());
+
+            var center = map.getCenter();
+
+            // Loop over the theators and put pins of them on the map
+            $(mapsData).each(function (i, item) {
+
+                var yourLocation = new Microsoft.Maps.Location(parseFloat(item.lat), parseFloat(item.long));
+                var pin = new Microsoft.Maps.Pushpin(yourLocation);
+
+                //Store some metadata with the pushpin.
+                pin.metadata = {
+                    title: item.name,
+                    description: ''
+                };
+
+                //Add a click event handler to the pushpin.
+                Microsoft.Maps.Events.addHandler(pin, 'click', pushpinClicked);
+
+                //Add pushpin to the map.
+                map.entities.push(pin);
+            });
+        }
+
+        function pushpinClicked(e) {
+            //Make sure the infobox has metadata to display.
+            if (e.target.metadata) {
+
+                // Get the clicked pushpin location
+                var lt = e.target.getLocation().latitude;
+                var ln = e.target.getLocation().longitude;
+
+                $.ajax({
+                    url: 'https://api.openweathermap.org/data/2.5/weather?appid=03b44e8f54adc3b1c92b9c6ebf1cc99b&units=metric&lat=' + lt + '&lon=' + ln,
+                    dataType: `JSON`,
+                    success: function (data) {
+                        //Set the infobox options with the metadata of the pushpin.
+                        infobox.setOptions({
+                            location: e.target.getLocation(),
+                            title: e.target.metadata.title,
+                            description: "Temp:" + data.main.temp + "\xB0",
+                            visible: true,
+                        });
+                    }
+                });
+            }
+        }
+    </script>
+</head>
+<body>
+    <div id="myMap" style="position:relative;width:600px;height:400px;"></div>
+</body>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
