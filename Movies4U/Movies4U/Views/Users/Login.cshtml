@@ -30,6 +30,13 @@
                 <input type="submit" value="Login" class="btn btn-default" />
             </div>
         </div>
+        @{ 
+            string error = ViewBag.Error;
+            if (error != null)
+            {
+                <label>@error</label>
+            }
+        }
     </div>
 </form>
 <form asp-action="Logout">

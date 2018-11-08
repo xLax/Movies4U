@@ -63,7 +63,7 @@ namespace Movies4U
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Users}/{action=Home}/{id?}");
+                    template: "{controller=Users}/{action=Login}/{id?}");
             });
         }
     }
