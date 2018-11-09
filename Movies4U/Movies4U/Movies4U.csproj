@@ -27,6 +27,8 @@
 <<<<<<< HEAD
     <PackageReference Include="TweetinviAPI" Version="4.0.0" />
 =======
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
 >>>>>>> c9e0cec56aceccec3f9aa753ecff7ebbd43c822a
   </ItemGroup>
   <ItemGroup>
