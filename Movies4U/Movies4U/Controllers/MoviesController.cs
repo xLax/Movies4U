@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Movies4U.Models;
+using Newtonsoft.Json;
 
 namespace Movies4U.Controllers
 {
@@ -147,6 +148,22 @@ namespace Movies4U.Controllers
         private bool MovieExists(int id)
         {
             return _context.Movie.Any(e => e.Id == id);
+        }
+
+        // GET: Courses
+        public JsonResult Search(string MovieName)
+        {
+            List<Movie> movies = _context.Movie.Where(x => x.Name.Contains(MovieName)).ToList();
+            JsonSerializerSettings serializerSettings = new JsonSerializerSettings();
+            serializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
+
+            //var q = from m in _context.Movie
+            //        where m.Name.Contains(MovieName)
+            //        select m;
+
+            //movies = q.ToList();
+
+            return Json(movies, serializerSettings); //await _context.Course.Where(c => c.Name.Contains(CourseName)).ToListAsync());
         }
     }
 }

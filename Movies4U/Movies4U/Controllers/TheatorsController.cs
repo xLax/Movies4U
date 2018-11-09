@@ -152,15 +152,7 @@ namespace Movies4U.Controllers
         // GET: Theators/Map
         public IActionResult Map()
         {
-            IEnumerable<Movies4U.Models.Theator> d = _context.Theator.ToList();
-            string mapString = "https://dev.virtualearth.net/REST/v1/Imagery/Map/Road/31.969738,34.772787/15?mapSize=500,500";
-            foreach (var item in d)
-            {
-                mapString += "&pp=" + item.Lat.ToString() + "," + item.Long.ToString() + ";0;" + item.Name.ToString();
-
-            }
-            mapString += "&key=Anz_iVVHeUHXQ9AMe_F5SIeaxLVAytusIPIK4NaTQibfrSBGSUcQVMv8KCe8xhWY";
-            return View((object)mapString);
+            return View(_context.Theator.ToList());
         }
     }
 }

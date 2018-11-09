@@ -26,6 +26,11 @@ namespace Movies4U.Controllers
             return View(await _context.Users.ToListAsync());
         }
 
+        public IActionResult Home()
+        {
+            return View();
+        }
+
         // GET: Users/Details/5
         public async Task<IActionResult> Details(string id)
         {
@@ -72,6 +77,19 @@ namespace Movies4U.Controllers
                     ModelState.AddModelError("Register", "User name already exist");
                 }
             }
+            return View(users);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Home([Bind("Username,Password")] Users users)
+        {
+            //if (ModelState.IsValid)
+            //{
+            //    _context.Add(users);
+            //    await _context.SaveChangesAsync();
+            //    return RedirectToAction("Index");
+            //}
             return View(users);
         }
 
@@ -171,38 +189,40 @@ namespace Movies4U.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login([Bind("Username,Password")] Users user)
         {
+            if (_context.Users.Any(u => u.Username == user.Username && u.Password == user.Password))
+                {
+                if (ModelState.IsValid)
+                {
+                    Users tmp_user = (Users)_context.Users.Single(currUser => user.Password == currUser.Password && user.Username == currUser.Username);
+                    if (tmp_user != null)
+                    {
+                        HttpContext.Session.SetString("userName", tmp_user.Username);
+                        var today = DateTime.Today;
+                        var age = today.Year - tmp_user.Birthdate.Year;
+                        if (tmp_user.Birthdate > today.AddYears(-age)) age--;
+                        if (age >= 16)
+                        {
+                            HttpContext.Session.SetString("16+", "true");
+                        }
+                        else
+                        {
+                            HttpContext.Session.SetString("16+", "false");
+                        }
 
-            if (ModelState.IsValid)
-            {
-                Users tmp_user = (Users)_context.Users.Single(currUser => user.Password == currUser.Password && user.Username == currUser.Username);
-                if (tmp_user != null)
-                {
-                    HttpContext.Session.SetString("userName", tmp_user.Username);
-                    var today = DateTime.Today;
-                    var age = today.Year - tmp_user.Birthdate.Year;
-                    if (tmp_user.Birthdate > today.AddYears(-age)) age--;
-                    if (age >= 16)
-                    {
-                        HttpContext.Session.SetString("16+", "true");
+                        if (tmp_user.Username == "chen" && tmp_user.Password == "1234")
+                        {
+                            HttpContext.Session.SetString("isAdmin", "true");
+                        }
+                        ViewBag.Error = null;
+                        return RedirectToAction("Index", "Movies");
                     }
-                    else
-                    {
-                        HttpContext.Session.SetString("16+", "false");
-                    }
-                    
-                    if (tmp_user.Username == "chen" && tmp_user.Password == "1234")
-                    {
-                        HttpContext.Session.SetString("isAdmin", "true");
-                    }
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    // TODO : return error message
-                    //return Json(new { error = "User name or password are incorrect." });
                 }
             }
-            return RedirectToAction("Index");
+            else
+            {
+                ViewBag.Error = "User name or password are incorrecrt";
+            }
+            return View();
         }
 
         // GET: Users/Logout
