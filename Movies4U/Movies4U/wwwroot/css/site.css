@@ -35,3 +35,13 @@ textarea {
         display: none;
     }
 }
+
+@font-face {
+    font-family: 'homeHeaderFont';
+    src: url(../fonts/arial.ttf);
+}
+
+.home-header {
+    text-shadow: 1px 1px #ededed;
+    font-family: 'homeHeaderFont' !important;
+}

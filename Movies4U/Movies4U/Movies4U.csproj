@@ -11,6 +11,11 @@
   <ItemGroup>
     <Compile Remove="Models\Usertype.cs" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="wwwroot\fonts\arial.ttf" />
+    <Content Include="wwwroot\videos\the_perfect_score_trailer.mp4" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />

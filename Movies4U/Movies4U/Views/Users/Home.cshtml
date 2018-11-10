@@ -3,36 +3,32 @@
 @{
     ViewData["Title"] = "Movies4U";
 }
+    <environment names="Development">
+        <link rel="stylesheet" href="~/css/site.css" />
+    </environment>
+    <section>
+        <header class="home-header">
+            <h1>Welcome to Movies4U !</h1>
+        </header>
+    </section>
+<br />
+<section>
+<aside>
+    <h4><b>Search for movies</b></h4>
+    <p>Search for movies by different filters >> <a href="~/Movies/Index">Movies</a></p>
+</aside>
+<br />
+<aside>
+    <h4><b>Popular Trailers</b></h4>
+    <p>The perfect score new trailer!</p>
+    <video width="600" height="370" autoplay title="The perfect score - Trailer">
+        <source src="~/videos/the_perfect_score_trailer.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</aside>
+</section>
 
-<h2>Welcome to Movies4U</h2>
 
-<form asp-action="Home">
-    <div class="form-horizontal">
-        <hr />
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group">
-            <label asp-for="Username" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Username" class="form-control" />
-                <span asp-validation-for="Username" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Password" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Password" class="form-control" type="password"/>
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Sign in" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
-</form>
-
-Don't own a user? <a href="Users/Create">Sign Up Here</a>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
