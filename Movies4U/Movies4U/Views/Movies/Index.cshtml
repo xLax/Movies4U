@@ -11,6 +11,47 @@
 <script>
 
     $(document).ready(
+
+        function () {
+
+            $('#submitBtn').click(
+                /** Search function **/
+                function () {
+                    var searchVal = $('#MovieName').val();
+                    var setData = $("#DataSearching");
+                    setData.html("");
+                    $.ajax({
+                        type: "POST",
+                        url: "/Movies/Search?MovieName=" + searchVal,
+                        contentType: "html",
+                        success: function (result) {
+                            if (result.length == 0) {
+                                setData.append('<tr><td colspan="7">No Movie Found</td></tr>');
+                            }
+                            else {
+                                $.each(result, function (index, value) {
+                                    var Data = "<tr>" +
+                                        "<td>" + value.Name + "</td>" +
+                                        "<td>" + value.Year + "</td>" +
+                                        "<td>" + value.NumOfMinutes + "</td>" +
+                                        "<td>" + value.Summary + "</td>" +
+                                        "<td>" + value.MinimumAge + "</td>" +
+                                        "<td>" + '<a href="' + value.TrailerURL + '">' + value.TrailerURL + "</td>" +
+                                        '<td><a href="/Movies/Edit/' + value.Id +
+                                        '">Edit</a> | <a href="/Movies/Details/' + value.Id +
+                                        '">Details</a> | <a href="/Movies/Delete/' + value.Id +
+                                        '">Delete</a></td>' +
+                                        "</tr>";
+
+                                    setData.append(Data);
+                                })
+                            }
+                        }
+                    });
+                });
+        });
+
+    $(document).ready(
         function(){
             $('#MovieName').keyup(function () {
                 var searchVal = $('#MovieName').val();
@@ -57,7 +98,7 @@
 <form asp-action="Search">
     <label>Browse by movie name:</label>
     <input type="text" id="MovieName" />
-    <input type="submit" />
+    <input id="submitBtn" value="Search" type="button" />
 </form>
 
 <table class="table">
