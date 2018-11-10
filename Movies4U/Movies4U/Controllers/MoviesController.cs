@@ -153,15 +153,22 @@ namespace Movies4U.Controllers
         // GET: Courses
         public JsonResult Search(string MovieName)
         {
-            List<Movie> movies = _context.Movie.Where(x => x.Name.Contains(MovieName)).ToList();
+            List<Movie> movies; // = _context.Movie.Where(x => x.Name.Contains(MovieName)).ToList();
             JsonSerializerSettings serializerSettings = new JsonSerializerSettings();
+
             serializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
 
-            //var q = from m in _context.Movie
-            //        where m.Name.Contains(MovieName)
-            //        select m;
-
-            //movies = q.ToList();
+            if (MovieName == null)
+            {
+                movies = ( from m in _context.Movie
+                           select m ).ToList();
+            }
+            else
+            {
+                movies = ( from m in _context.Movie
+                           where m.Name.Contains(MovieName)
+                           select m ).ToList();
+            }
 
             return Json(movies, serializerSettings); //await _context.Course.Where(c => c.Name.Contains(CourseName)).ToListAsync());
         }
