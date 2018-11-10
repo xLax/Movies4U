@@ -45,3 +45,9 @@ textarea {
     text-shadow: 1px 1px #ededed;
     font-family: 'homeHeaderFont' !important;
 }
+
+.Movie-Summary {
+    column-count: 2;
+    column-gap: 10px;
+    width: 800px;
+}

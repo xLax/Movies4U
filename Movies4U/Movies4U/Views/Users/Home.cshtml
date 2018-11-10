@@ -6,21 +6,30 @@
     <environment names="Development">
         <link rel="stylesheet" href="~/css/site.css" />
     </environment>
+<br />
     <section>
-        <header class="home-header">
-            <h1>Welcome to Movies4U !</h1>
+        <header>
+            <canvas id="myCanvas" width="900" height="70" style="border:1px solid #d3d3d3;">
+            </canvas>
         </header>
     </section>
 <br />
 <section>
 <aside>
-    <h4><b>Search for movies</b></h4>
+    <h3 class="home-header"><b>Search for movies</b></h3>
     <p>Search for movies by different filters >> <a href="~/Movies/Index">Movies</a></p>
 </aside>
 <br />
 <aside>
-    <h4><b>Popular Trailers</b></h4>
-    <p>The perfect score new trailer!</p>
+    <h3 class="home-header"><b>Popular Trailers</b></h3>
+    <p><h4>The perfect score new trailer!</h4></p>
+    <div class="Movie-Summary">
+        The perfect score movie is a family-movie located in the Collage of Managment.
+        The story is about three students named Liron, Chen and May that
+        recivied 100 in their application development project from their professor.
+        And they lived happily ever after.
+    </div>
+    <br />
     <video width="600" height="370" autoplay title="The perfect score - Trailer">
         <source src="~/videos/the_perfect_score_trailer.mp4" type="video/mp4">
         Your browser does not support the video tag.
@@ -28,7 +37,12 @@
 </aside>
 </section>
 
-
+<script>
+var c = document.getElementById("myCanvas");
+var ctx = c.getContext("2d");
+ctx.font = "30px Arial";
+ctx.fillText("Welcome to Movies4U",340,45);
+</script>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
