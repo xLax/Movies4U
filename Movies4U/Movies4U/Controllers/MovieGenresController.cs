@@ -25,6 +25,13 @@ namespace Movies4U.Controllers
             return View(await databaseContext.ToListAsync());
         }
 
+        public async Task<IActionResult> MoviesGenreStat()
+        {
+            return View();
+        }
+
+
+
         // GET: MovieGenres/Details/5
         public async Task<IActionResult> Details(int? id)
         {
