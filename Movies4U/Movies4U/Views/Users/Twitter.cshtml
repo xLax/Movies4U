@@ -24,16 +24,17 @@
 
     <h5 id="newTweets"></h5><br />
 </div>
+
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script type="text/javascript">
     function lastTweets() {
-        console.clear();
+        //console.clear();
         $.ajax({
             type: "GET",
             url: "ImportTweets",
             success: function (res) {
                 var counter = 0;
-
+                $('#lastTweets').html("");
                 res && res.forEach(tweetData => {
                     counter++;
                     $('#lastTweets')[0].innerHTML +=
@@ -72,5 +73,10 @@
         lastTweets();
     }
 
-    lastTweets();
+    $(documect).ready(function () {
+
+        lastTweets();
+    });
+
+    
 </script>
