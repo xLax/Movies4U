@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Session;
 using Movies4U.Models;
+using Tweetinvi.Models;
+using Tweetinvi;
 
 namespace Movies4U.Controllers
 {
@@ -29,6 +31,45 @@ namespace Movies4U.Controllers
         public IActionResult Home()
         {
             return View();
+        }
+
+        public IActionResult Twitter()
+        {
+            return View();
+        }
+
+        public dynamic NewPost(string text)
+        {
+            Twitter TwitterConnection = new Twitter();
+
+            var authenticatedUser = TwitterConnection.AuthenticatedUser;
+
+            if (!string.IsNullOrWhiteSpace(text) && text != "")
+            {
+                var newTweet = Tweet.PublishTweet(text);
+
+                return newTweet;
+            }
+
+            return string.Empty;
+        }
+
+        public dynamic ImportTweets()
+        {
+            Twitter TwitterConnection = new Twitter();
+            
+            var authenticatedUser = TwitterConnection.AuthenticatedUser;
+            
+            var last5Tweets = Timeline.GetUserTimeline(authenticatedUser, 5);
+
+            List<ITweet> topTweets = new List<ITweet>();
+
+            foreach (var curr in last5Tweets)
+            {
+                topTweets.Add(curr);
+            }
+
+            return topTweets;
         }
 
         // GET: Users/Details/5
@@ -190,7 +231,7 @@ namespace Movies4U.Controllers
         public async Task<IActionResult> Login([Bind("Username,Password")] Users user)
         {
             if (_context.Users.Any(u => u.Username == user.Username && u.Password == user.Password))
-                {
+            {
                 if (ModelState.IsValid)
                 {
                     Users tmp_user = (Users)_context.Users.Single(currUser => user.Password == currUser.Password && user.Username == currUser.Username);

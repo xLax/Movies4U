@@ -1,0 +1,76 @@
+﻿@model IEnumerable<Movies4U.Models.Users>
+
+@{
+    ViewData["Title"] = "Twitter";
+}
+
+@*<h2>Twitter</h2>
+
+        <a asp-action="Admin">Admin page >></a>
+
+    @{
+        ViewData["Title"] = "Twitter";
+    }*@
+<h2>@ViewData["Title"]</h2>
+<button type="button" onclick="createTweet()" class="btn btn-primary">NEW TWEET</button>
+
+<div id="tweets">
+    <h3>last tweets:</h3>
+
+    <h5 id="lastTweets"></h5><br />
+</div>
+<div id="tweets">
+    <h3>new tweets:</h3>
+
+    <h5 id="newTweets"></h5><br />
+</div>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript">
+    function lastTweets() {
+        console.clear();
+        $.ajax({
+            type: "GET",
+            url: "ImportTweets",
+            success: function (res) {
+                var counter = 0;
+
+                res && res.forEach(tweetData => {
+                    counter++;
+                    $('#lastTweets')[0].innerHTML +=
+                        "Tweet #" + (counter) + ": " + tweetData.text + "<br />\n"
+
+                    console.log(tweetData);
+                })
+            },
+            error: function (err) {
+                console.error(err);
+            }
+        });
+    }
+    function createTweet() {
+        var txt = "";
+        var person = prompt("write your tweet here:", "");
+        $('#newTweets')[0].innerHTML += "new tweet: " + $('#newTweets')[0].innerHTML + "\n"
+        if (person == null || person == "") {
+            txt = "post canceled.";
+        } else {
+            txt = person;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "NewPost",
+            data: {
+                text: person
+            },
+            dataType: 'jsonp',
+            success: function (res) {
+                $('#newTweets')[0].innerHTML = txt;
+            }
+        });
+        $('#newTweets')[0].innerHTML = txt;
+        lastTweets();
+    }
+
+    lastTweets();
+</script>

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Tweetinvi;
 
 namespace Movies4U.Models
 {
@@ -15,6 +16,9 @@ namespace Movies4U.Models
 
         public string Email { get; set; }
 
-        public DateTime Birthdate { get; set; } 
+        public DateTime Birthdate { get; set; }
+
+        public Tweetinvi.Models.IAuthenticatedUser AuthenticatedUser;
+
     }
 }
