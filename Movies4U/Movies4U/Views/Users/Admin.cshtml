@@ -10,6 +10,7 @@
 
 <hr />
 <head>
+    
     <style>
         .try {
             background-color: black;
@@ -24,6 +25,7 @@
             outline: none;
             display: inline-block;
             transition-duration: 0.4s;
+            border-radius: 4px;
         }
 
             .try:hover {
@@ -38,6 +40,7 @@
                 border: none;
                 outline: none;
                 display: inline-block;
+                border-radius: 4px;
             }
 
         .all {
@@ -68,6 +71,9 @@
                     <td><button class="try" asp-area="" asp-controller="Theators" asp-action="Index">Manage Theators</button></td>
                     <td class="spacing-td"></td>
                     <td><button class="try" asp-area="" asp-controller="MovieGenres" asp-action="Index">Manage MovieGenres</button></td>
+                </tr>
+                <tr>
+                    <td colspan="3"><br><button class="try" asp-area="" asp-controller="Movies" asp-action="AdminSearch">Wide Admin Search</button></td>
                 </tr>
             </table>
             </div>

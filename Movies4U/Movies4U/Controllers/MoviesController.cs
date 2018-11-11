@@ -25,6 +25,12 @@ namespace Movies4U.Controllers
             return View(await _context.Movie.ToListAsync());
         }
 
+        // GET: Movies
+        public async Task<IActionResult> AdminSearch()
+        {
+            return View(await _context.Movie.ToListAsync());
+        }
+
         // GET: Movies/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -153,17 +159,236 @@ namespace Movies4U.Controllers
         // GET: Courses
         public JsonResult Search(string MovieName)
         {
-            List<Movie> movies = _context.Movie.Where(x => x.Name.Contains(MovieName)).ToList();
+            List<Movie> movies; 
             JsonSerializerSettings serializerSettings = new JsonSerializerSettings();
+
             serializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
 
-            //var q = from m in _context.Movie
-            //        where m.Name.Contains(MovieName)
-            //        select m;
+            if (MovieName == null)
+            {
+                movies = ( from m in _context.Movie
+                           select m ).ToList();
+            }
+            else
+            {
+                movies = ( from m in _context.Movie
+                           where m.Name.Contains(MovieName)
+                           select m ).ToList();
+            }
 
-            //movies = q.ToList();
+            return Json(movies, serializerSettings);
+        }
 
-            return Json(movies, serializerSettings); //await _context.Course.Where(c => c.Name.Contains(CourseName)).ToListAsync());
+        public JsonResult GetGenres()
+        {
+            List<Genre> genres; 
+            JsonSerializerSettings serializerSettings = new JsonSerializerSettings();
+
+            serializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
+
+            genres = (from g in _context.Genre
+                      select g).ToList();
+
+            return Json(genres, serializerSettings);
+        }
+
+        public JsonResult GetLanguages()
+        {
+            List<Language> languages;
+            JsonSerializerSettings serializerSettings = new JsonSerializerSettings();
+
+            serializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
+
+            languages = (from l in _context.Language
+                         select l).ToList();
+
+            return Json(languages, serializerSettings);
+        }
+
+        public JsonResult AdminSearchAction(string MovieName, string SearchGenre, string SearchLanguage)
+        {
+            List<Movie> movies;
+            JsonSerializerSettings serializerSettings = new JsonSerializerSettings();
+            int genreID = int.Parse(SearchGenre);
+            int languageID = int.Parse(SearchLanguage);
+
+            serializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
+
+            if (MovieName == null)
+            {
+                if(genreID == 0)
+                {
+                    if(languageID == 0)
+                    {
+                        // name genre and language are empty
+                        movies = (from m in _context.Movie
+                                  select m).ToList();
+                    }
+                    else
+                    {
+                        // name and genre empty
+                        // language is full
+                        movies = (from m in _context.Movie
+                                  join ml in _context.MovieLanguages on 
+                                  new
+                                  {
+                                      movieId = m.Id,
+                                      movieLanId = languageID
+                                  }
+                                  equals
+                                  new
+                                  {
+                                      movieId = ml.MovieId,
+                                      movieLanId = ml.LanguageId
+                                  }
+                                  select m).ToList();
+                    }
+                }
+                else
+                {
+                    if (languageID == 0)
+                    {
+                        // name and language empty
+                        // genre is full
+                        movies = (from m in _context.Movie
+                                  join mg in _context.MovieGenres on
+                                  new
+                                  {
+                                      movieId = m.Id,
+                                      movieGenId = genreID
+                                  }
+                                  equals
+                                  new
+                                  {
+                                      movieId = mg.MovieId,
+                                      movieGenId = mg.GenreId
+                                  }
+                                  select m).ToList();
+                    }
+                    else
+                    {
+                        // name is empty
+                        // language and genre are full
+                        movies = (from m in _context.Movie
+                                  join ml in _context.MovieLanguages on
+                                  new
+                                  {
+                                      movieId = m.Id,
+                                      movieLanId = languageID
+                                  }
+                                  equals
+                                  new
+                                  {
+                                      movieId = ml.MovieId,
+                                      movieLanId = ml.LanguageId
+                                  }
+                                  join mg in _context.MovieGenres on
+                                  new
+                                  {
+                                      movieId = m.Id,
+                                      movieGenId = genreID
+                                  }
+                                  equals
+                                  new
+                                  {
+                                      movieId = mg.MovieId,
+                                      movieGenId = mg.GenreId
+                                  }
+                                  select m).ToList();
+                    }
+                }
+                
+            }
+            else
+            {
+                if (genreID == 0)
+                {
+                    if (languageID == 0)
+                    {
+                        // language and genre empty
+                        // name is full
+                        movies = (from m in _context.Movie
+                                  where m.Name.Contains(MovieName)
+                                  select m).ToList();
+                    }
+                    else
+                    {
+                        // genre empty
+                        // name and language are full
+                        movies = (from m in _context.Movie
+                                  join ml in _context.MovieLanguages on
+                                  new
+                                  {
+                                      movieId = m.Id,
+                                      movieLanId = languageID
+                                  }
+                                  equals
+                                  new
+                                  {
+                                      movieId = ml.MovieId,
+                                      movieLanId = ml.LanguageId
+                                  }
+                                  where m.Name.Contains(MovieName)
+                                  select m).ToList();
+                    }
+                }
+                else
+                {
+                    if (languageID == 0)
+                    {
+                        // name and genre are full
+                        // language is empty
+                        movies = (from m in _context.Movie
+                                  join mg in _context.MovieGenres on
+                                  new
+                                  {
+                                      movieId = m.Id,
+                                      movieGenId = genreID
+                                  }
+                                  equals
+                                  new
+                                  {
+                                      movieId = mg.MovieId,
+                                      movieGenId = mg.GenreId
+                                  }
+                                  where m.Name.Contains(MovieName)
+                                  select m).ToList();
+                    }
+                    else
+                    {
+                        // name language and genre are full
+                        movies = (from m in _context.Movie
+                                  join ml in _context.MovieLanguages on
+                                  new
+                                  {
+                                      movieId = m.Id,
+                                      movieLanId = languageID
+                                  }
+                                  equals
+                                  new
+                                  {
+                                      movieId = ml.MovieId,
+                                      movieLanId = ml.LanguageId
+                                  }
+                                  join mg in _context.MovieGenres on
+                                  new
+                                  {
+                                      movieId = m.Id,
+                                      movieGenId = genreID
+                                  }
+                                  equals
+                                  new
+                                  {
+                                      movieId = mg.MovieId,
+                                      movieGenId = mg.GenreId
+                                  }
+                                  where m.Name.Contains(MovieName)
+                                  select m).ToList();
+                    }
+                }
+            }
+
+            return Json(movies, serializerSettings);
         }
     }
 }

@@ -3,36 +3,46 @@
 @{
     ViewData["Title"] = "Movies4U";
 }
-
-<h2>Welcome to Movies4U</h2>
-
-<form asp-action="Home">
-    <div class="form-horizontal">
-        <hr />
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        <div class="form-group">
-            <label asp-for="Username" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Username" class="form-control" />
-                <span asp-validation-for="Username" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label asp-for="Password" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <input asp-for="Password" class="form-control" type="password"/>
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Sign in" class="btn btn-default" />
-            </div>
-        </div>
+    <environment names="Development">
+        <link rel="stylesheet" href="~/css/site.css" />
+    </environment>
+<br />
+    <section>
+        <header>
+            <canvas id="myCanvas" width="900" height="70" style="border:1px solid #d3d3d3;">
+            </canvas>
+        </header>
+    </section>
+<br />
+<section>
+<aside>
+    <h3 class="home-header"><b>Search for movies</b></h3>
+    <p>Search for movies by different filters >> <a href="~/Movies/Index">Movies</a></p>
+</aside>
+<br />
+<aside>
+    <h3 class="home-header"><b>Popular Trailers</b></h3>
+    <p><h4>The perfect score new trailer!</h4></p>
+    <div class="Movie-Summary">
+        The perfect score movie is a family-movie located in the Collage of Managment.
+        The story is about three students named Liron, Chen and May that
+        recivied 100 in their application development project from their professor.
+        And they lived happily ever after.
     </div>
-</form>
+    <br />
+    <video width="600" height="370" autoplay title="The perfect score - Trailer">
+        <source src="~/videos/the_perfect_score_trailer.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</aside>
+</section>
 
-Don't own a user? <a href="Users/Create">Sign Up Here</a>
+<script>
+var c = document.getElementById("myCanvas");
+var ctx = c.getContext("2d");
+ctx.font = "30px Arial";
+ctx.fillText("Welcome to Movies4U",340,45);
+</script>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

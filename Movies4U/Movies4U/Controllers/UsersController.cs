@@ -255,7 +255,7 @@ namespace Movies4U.Controllers
                             HttpContext.Session.SetString("isAdmin", "true");
                         }
                         ViewBag.Error = null;
-                        return RedirectToAction("Index", "Movies");
+                        return RedirectToAction("Home", "Users");
                     }
                 }
             }
@@ -274,7 +274,7 @@ namespace Movies4U.Controllers
                 HttpContext.Session.Clear();
             }
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login", "Users");
         }
 
         // GET: Users/Admin

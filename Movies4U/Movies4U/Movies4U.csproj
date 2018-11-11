@@ -13,6 +13,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="wwwroot\fonts\arial.ttf" />
+    <Content Include="wwwroot\videos\the_perfect_score_trailer.mp4" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Remove="Views\Users\Twitter.cshtml" />
   </ItemGroup>
   <ItemGroup>
