@@ -25,6 +25,11 @@ namespace Movies4U.Controllers
             return View(await databaseContext.ToListAsync());
         }
 
+        public async Task<IActionResult> MoviesLangStat()
+        {
+            return View();
+        }
+
         // GET: MovieLanguages/Details/5
         public async Task<IActionResult> Details(int? id)
         {
