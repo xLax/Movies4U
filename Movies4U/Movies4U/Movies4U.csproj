@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Views\MovieGenres\bullet.js" />
     <Content Include="wwwroot\fonts\arial.ttf" />
     <Content Include="wwwroot\js\bullet.js" />
     <Content Include="wwwroot\videos\the_perfect_score_trailer.mp4" />
