@@ -254,6 +254,10 @@ namespace Movies4U.Controllers
                         {
                             HttpContext.Session.SetString("isAdmin", "true");
                         }
+                        else
+                        {
+                            HttpContext.Session.SetString("isAdmin", "false");
+                        }
                         ViewBag.Error = null;
                         return RedirectToAction("Home", "Users");
                     }

@@ -1,4 +1,8 @@
 @model IEnumerable<Movies4U.Models.Movie>
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor contextHttp
+@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+
 
 @{
     ViewData["Title"] = "Index";
@@ -8,92 +12,16 @@
         crossorigin="anonymous">
 
 </script>
-<script>
 
-    $(document).ready(
-
-        function () {
-
-            $('#submitBtn').click(
-                /** Search function **/
-                function () {
-                    var searchVal = $('#MovieName').val();
-                    var setData = $("#DataSearching");
-                    setData.html("");
-                    $.ajax({
-                        type: "POST",
-                        url: "/Movies/Search?MovieName=" + searchVal,
-                        contentType: "html",
-                        success: function (result) {
-                            if (result.length == 0) {
-                                setData.append('<tr><td colspan="7">No Movie Found</td></tr>');
-                            }
-                            else {
-                                $.each(result, function (index, value) {
-                                    var Data = "<tr>" +
-                                        "<td>" + value.Name + "</td>" +
-                                        "<td>" + value.Year + "</td>" +
-                                        "<td>" + value.NumOfMinutes + "</td>" +
-                                        "<td>" + value.Summary + "</td>" +
-                                        "<td>" + value.MinimumAge + "</td>" +
-                                        "<td>" + '<a href="' + value.TrailerURL + '">' + value.TrailerURL + "</td>" +
-                                        '<td><a href="/Movies/Edit/' + value.Id +
-                                        '">Edit</a> | <a href="/Movies/Details/' + value.Id +
-                                        '">Details</a> | <a href="/Movies/Delete/' + value.Id +
-                                        '">Delete</a></td>' +
-                                        "</tr>";
-
-                                    setData.append(Data);
-                                })
-                            }
-                        }
-                    });
-                });
-        });
-
-    $(document).ready(
-        function(){
-            $('#MovieName').keyup(function () {
-                var searchVal = $('#MovieName').val();
-                var setData = $("#DataSearching");
-                setData.html("");
-                $.ajax({
-                    type: "POST",
-                    url: "/Movies/Search?MovieName=" + searchVal,
-                    contentType: "html",
-                    success: function (result) {
-                        if (result.length == 0) {
-                            setData.append('<tr><td colspan="7">No Movie Found</td></tr>');
-                        }
-                        else {
-                            $.each(result, function (index, value){
-                                var Data = "<tr>" +
-                                    "<td>" + value.Name + "</td>" +
-                                    "<td>" + value.Year + "</td>" +
-                                    "<td>" + value.NumOfMinutes + "</td>" +
-                                    "<td>" + value.Summary + "</td>" +
-                                    "<td>" + value.MinimumAge + "</td>" +
-                                    "<td>" + '<a href="' + value.TrailerURL + '">' + value.TrailerURL + "</td>" +
-                                    '<td><a href="/Movies/Edit/' + value.Id +
-                                    '">Edit</a> | <a href="/Movies/Details/' + value.Id +
-                                    '">Details</a> | <a href="/Movies/Delete/' + value.Id +
-                                    '">Delete</a></td>' +
-                                    "</tr>";
-
-                                setData.append(Data);
-                            })
-                        }
-                    }
-                });
-            });
-        });
-</script>
 
 <h2>Index</h2>
-
+<input id="isAdmin" type="hidden" value="@contextHttp.HttpContext.Session.GetString("isAdmin").ToString()" />
+@if (contextHttp.HttpContext.Session.GetString("isAdmin") == "true")
+{
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+}
 
 <form asp-action="Search">
     <label>Browse by movie name:</label>
@@ -146,14 +74,107 @@
             <td>
                 <a href="@Html.DisplayFor(modelItem => item.TrailerURL)">@Html.DisplayFor(modelItem => item.TrailerURL)</a>
             </td>
+            @if (contextHttp.HttpContext.Session.GetString("isAdmin") == "true")
+            {
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> <br />
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> <br />
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
+            }
         </tr>
 }
     </tbody>
 </table>
-
+@if (contextHttp.HttpContext.Session.GetString("isAdmin") == "true")
+{
 <a asp-controller="Users" asp-action="Admin">Admin page >></a>
+}
+<script>
+
+    var isAdmin = $('#isAdmin').val();
+
+    $(document).ready(
+
+        function () {
+
+            $('#submitBtn').click(
+                /** Search function **/
+                function () {
+                    var searchVal = $('#MovieName').value();
+                    var setData = $("#DataSearching");
+                    setData.html("");
+                    $.ajax({
+                        type: "POST",
+                        url: "/Movies/Search?MovieName=" + searchVal,
+                        contentType: "html",
+                        success: function (result) {
+                            if (result.length == 0) {
+                                setData.append('<tr><td colspan="7">No Movie Found</td></tr>');
+                            }
+                            else {
+                                $.each(result, function (index, value) {
+                                    var Data = "<tr>" +
+                                        "<td>" + value.Name + "</td>" +
+                                        "<td>" + value.Year + "</td>" +
+                                        "<td>" + value.NumOfMinutes + "</td>" +
+                                        "<td>" + value.Summary + "</td>" +
+                                        "<td>" + value.MinimumAge + "</td>" +
+                                        "<td>" + '<a href="' + value.TrailerURL + '">' + value.TrailerURL + "</td>";
+
+                                    if (isAdmin == "true") {
+                                        Data += '<td><a href="/Movies/Edit/' + value.Id +
+                                            '">Edit</a> <br> <a href="/Movies/Details/' + value.Id +
+                                            '">Details</a> <br> <a href="/Movies/Delete/' + value.Id +
+                                            '">Delete</a></td>' +
+                                            "</tr>";
+                                    }
+
+                                    setData.append(Data);
+                                })
+                            }
+                        }
+                    });
+                });
+        });
+
+    $(document).ready(
+        function () {
+            $('#MovieName').keyup(function () {
+                var searchVal = $('#MovieName').val();
+                var setData = $("#DataSearching");
+                setData.html("");
+                $.ajax({
+                    type: "POST",
+                    url: "/Movies/Search?MovieName=" + searchVal,
+                    contentType: "html",
+                    success: function (result) {
+                        if (result.length == 0) {
+                            setData.append('<tr><td colspan="7">No Movie Found</td></tr>');
+                        }
+                        else {
+                            $.each(result, function (index, value) {
+                                var Data = "<tr>" +
+                                    "<td>" + value.Name + "</td>" +
+                                    "<td>" + value.Year + "</td>" +
+                                    "<td>" + value.NumOfMinutes + "</td>" +
+                                    "<td>" + value.Summary + "</td>" +
+                                    "<td>" + value.MinimumAge + "</td>" +
+                                    "<td>" + '<a href="' + value.TrailerURL + '">' + value.TrailerURL + "</td>";
+
+                                if (isAdmin == "true") {
+                                    Data += '<td><a href="/Movies/Edit/' + value.Id +
+                                        '">Edit</a><br> <a href="/Movies/Details/' + value.Id +
+                                        '">Details</a><br>  <a href="/Movies/Delete/' + value.Id +
+                                        '">Delete</a></td>' +
+                                        "</tr>";
+                                }
+
+                                setData.append(Data);
+                            })
+                        }
+                    }
+                });
+            });
+        });
+</script>
