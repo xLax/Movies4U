@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <Content Remove="bullets.json" />
+    <Content Remove="Views\MovieGenres\GroupBy.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
